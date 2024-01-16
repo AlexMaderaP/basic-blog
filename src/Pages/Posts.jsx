@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, NavLink, useLoaderData } from "react-router-dom";
 
 function Posts() {
   const posts = useLoaderData();
@@ -15,9 +15,9 @@ function Posts() {
               <div className="card-preview-text">{post.body}</div>
             </div>
             <div className="card-footer">
-              <Link className="btn" to="./">
+              <NavLink className="btn" to={post.id.toString()}>
                 View
-              </Link>
+              </NavLink>
             </div>
           </div>
         ))}
