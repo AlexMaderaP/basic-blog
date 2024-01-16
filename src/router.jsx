@@ -9,7 +9,7 @@ export const router = createBrowserRouter([
   {
     element: <NavLayout />,
     children: [
-      //   { path: "*", element: <Posts /> },
+      { path: "*", element: <Posts /> },
       {
         path: "/posts",
         children: [
@@ -31,7 +31,18 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      { path: "/users", element: <Users /> },
+      {
+        path: "/users",
+        children: [
+          {
+            index: true,
+            element: <Users />,
+            loader: ({ request: { signal } }) => {
+              return fetch("http://127.0.0.1:3000/users", { signal });
+            },
+          },
+        ],
+      },
       { path: "/todos", element: <Todos /> },
     ],
   },
