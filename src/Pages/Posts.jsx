@@ -5,7 +5,7 @@ function Posts() {
   const posts = useLoaderData();
 
   return (
-    <div className="container">
+    <>
       <h1 className="page-title">Posts</h1>
       <div className="card-grid">
         {posts.map((post) => (
@@ -22,7 +22,7 @@ function Posts() {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
 

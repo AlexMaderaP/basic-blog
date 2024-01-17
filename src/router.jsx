@@ -1,4 +1,9 @@
-import { Outlet, createBrowserRouter, redirect } from "react-router-dom";
+import {
+  Outlet,
+  createBrowserRouter,
+  redirect,
+  useNavigation,
+} from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Posts from "./Pages/Posts";
 import Users from "./Pages/Users";
@@ -65,10 +70,15 @@ export const router = createBrowserRouter([
 ]);
 
 function NavLayout() {
+  const { state } = useNavigation();
+
   return (
     <>
       <Navbar />
-      <Outlet />
+      {state === "loading" && <div className="loading-spinner"></div>}
+      <div className={`container ${state === "loading" && "loading"}`}>
+        <Outlet />
+      </div>
     </>
   );
 }
