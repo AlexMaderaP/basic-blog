@@ -26,6 +26,14 @@ function User() {
           <PostItem key={post.id} post={post} />
         ))}
       </div>
+      <h3 className="mt-4 mb-2">Todos</h3>
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo.id} className={todo.completed ? "strike-through" : ""}>
+            {todo.title}
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
