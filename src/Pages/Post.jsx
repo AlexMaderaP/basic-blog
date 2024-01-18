@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLoaderData } from "react-router-dom";
+import { getPostById } from "../api/posts";
 
 function Post() {
   const { post, comments, user } = useLoaderData();
@@ -27,24 +28,7 @@ function Post() {
 }
 
 function loader({ params, request: { signal } }) {
-  return Promise.all([
-    fetch(`http://127.0.0.1:3000/posts/${params.postId}`, {
-      signal,
-    }),
-    fetch(`http://127.0.0.1:3000/posts/${params.postId}/comments`, {
-      signal,
-    }),
-  ])
-    .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
-    .then(([post, comments]) => {
-      return fetch(`http://127.0.0.1:3000/users/${post.userId}`, {
-        signal,
-      })
-        .then((res) => res.json())
-        .then((user) => {
-          return { post, comments, user };
-        });
-    });
+  return getPostById(params.postId, { signal });
 }
 
 export const postRoute = {

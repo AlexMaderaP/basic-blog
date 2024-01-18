@@ -1,6 +1,7 @@
 import React from "react";
 import { useLoaderData } from "react-router-dom";
 import PostItem from "../Components/PostItem";
+import { getUserById } from "../api/users";
 
 function User() {
   const { user, posts, todos } = useLoaderData();
@@ -38,23 +39,7 @@ function User() {
 }
 
 function loader({ params, request: { signal } }) {
-  return Promise.all([
-    fetch(`http://127.0.0.1:3000/users/${params.userId}`, {
-      signal,
-    }),
-    fetch(`http://127.0.0.1:3000/posts?userId=${params.userId}`, {
-      signal,
-    }),
-    fetch(`http://127.0.0.1:3000/todos?userId=${params.userId}`, {
-      signal,
-    }),
-  ])
-    .then(([res1, res2, res3]) =>
-      Promise.all([res1.json(), res2.json(), res3.json()])
-    )
-    .then(([user, posts, todos]) => {
-      return { user, posts, todos };
-    });
+  return getUserById(params.userId, { signal });
 }
 
 export const userRoute = {
