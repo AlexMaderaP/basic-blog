@@ -3,7 +3,7 @@ import { Link, useLoaderData } from "react-router-dom";
 
 function Users() {
   const users = useLoaderData();
-  console.log(users);
+
   return (
     <>
       <h1 className="page-title">Users</h1>
@@ -28,4 +28,17 @@ function Users() {
   );
 }
 
-export default Users;
+function loader({ request: { signal } }) {
+  return fetch("http://127.0.0.1:3000/users", { signal }).then((res) => {
+    if (res.ok) return res.json();
+
+    return Promise.reject(
+      `HTTP error status: ${res.status}\n ${res.statusText}`
+    );
+  });
+}
+
+export const userListRoute = {
+  loader,
+  element: <Users />,
+};

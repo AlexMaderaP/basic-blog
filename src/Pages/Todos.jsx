@@ -18,4 +18,17 @@ function Todos() {
   );
 }
 
-export default Todos;
+function loader({ request: { signal } }) {
+  return fetch("http://127.0.0.1:3000/todos", { signal }).then((res) => {
+    if (res.ok) return res.json();
+
+    return Promise.reject(
+      `HTTP error status: ${res.status}\n ${res.statusText}`
+    );
+  });
+}
+
+export const todoListRoute = {
+  loader,
+  element: <Todos />,
+};
