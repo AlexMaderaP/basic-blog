@@ -1,6 +1,8 @@
 import React from "react";
 import { useLoaderData } from "react-router-dom";
 import PostItem from "../Components/PostItem";
+import axios from "axios";
+import { getPosts } from "../api/posts";
 
 function Posts() {
   const posts = useLoaderData();
@@ -18,12 +20,7 @@ function Posts() {
 }
 
 function loader({ request: { signal } }) {
-  return fetch("http://127.0.0.1:3000/posts", { signal }).then((res) => {
-    if (res.ok) return res.json();
-    return Promise.reject(
-      `HTTP error status: ${res.status}\n ${res.statusText}`
-    );
-  });
+  return getPosts({ signal });
 }
 
 export const postListRoute = {
