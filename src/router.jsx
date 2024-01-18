@@ -10,42 +10,46 @@ import NavLayout from "./Layouts/NavLayout";
 export const router = createBrowserRouter([
   {
     element: <NavLayout />,
-    errorElement: <Error />,
     children: [
-      { index: true, element: <Navigate to="posts" replace /> },
       {
-        path: "/posts",
+        errorElement: <Error />,
         children: [
+          { index: true, element: <Navigate to="posts" replace /> },
           {
-            index: true,
-            ...postListRoute,
+            path: "/posts",
+            children: [
+              {
+                index: true,
+                ...postListRoute,
+              },
+              {
+                path: ":postId",
+                ...postRoute,
+              },
+            ],
           },
           {
-            path: ":postId",
-            ...postRoute,
+            path: "/users",
+            children: [
+              {
+                index: true,
+                ...userListRoute,
+              },
+              {
+                path: ":userId",
+                ...userRoute,
+              },
+            ],
+          },
+          {
+            path: "/todos",
+            ...todoListRoute,
+          },
+          {
+            path: "*",
+            element: <h1>404 - Page not found</h1>,
           },
         ],
-      },
-      {
-        path: "/users",
-        children: [
-          {
-            index: true,
-            ...userListRoute,
-          },
-          {
-            path: ":userId",
-            ...userRoute,
-          },
-        ],
-      },
-      {
-        path: "/todos",
-        ...todoListRoute,
-      },
-      {
-        path: "/error",
-        element: <Error />,
       },
     ],
   },

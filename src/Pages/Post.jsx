@@ -1,9 +1,13 @@
 import React from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { getPostById } from "../api/posts";
+import { getComments } from "../api/comments";
+import { getUserById } from "../api/users";
 
 function Post() {
   const { post, comments, user } = useLoaderData();
+
+  console.log(comments);
 
   return (
     <>
@@ -27,8 +31,12 @@ function Post() {
   );
 }
 
-function loader({ params, request: { signal } }) {
-  return getPostById(params.postId, { signal });
+async function loader({ params, request: { signal } }) {
+  const comments = getComments(params.postId, { signal });
+  const post = await getPostById(params.postId, { signal });
+  const user = getUserById(post.userId, { signal });
+
+  return { comments: await comments, post, user: await user };
 }
 
 export const postRoute = {
