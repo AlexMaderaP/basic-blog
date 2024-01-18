@@ -2,6 +2,9 @@ import React from "react";
 import { useLoaderData } from "react-router-dom";
 import PostItem from "../Components/PostItem";
 import { getUserById } from "../api/users";
+import { getPosts } from "../api/posts";
+import { getTodos } from "../api/todos";
+import TodoItem from "../Components/TodoItem";
 
 function User() {
   const { user, posts, todos } = useLoaderData();
@@ -29,17 +32,19 @@ function User() {
       <h3 className="mt-4 mb-2">Todos</h3>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id} className={todo.completed ? "strike-through" : ""}>
-            {todo.title}
-          </li>
+          <TodoItem key={todo.id} {...todo} />
         ))}
       </ul>
     </>
   );
 }
 
-function loader({ params, request: { signal } }) {
-  return getUserById(params.userId, { signal });
+async function loader({ request: { signal }, params: { userId } }) {
+  const user = getUserById(userId, { signal });
+  const posts = getPosts({ signal, params: { userId } });
+  const todos = getTodos({ signal, params: { userId } });
+
+  return { user: await user, posts: await posts, todos: await todos };
 }
 
 export const userRoute = {

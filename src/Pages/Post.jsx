@@ -7,8 +7,6 @@ import { getUserById } from "../api/users";
 function Post() {
   const { post, comments, user } = useLoaderData();
 
-  console.log(comments);
-
   return (
     <>
       <h1 className="page-title">{post.title}</h1>
@@ -16,6 +14,7 @@ function Post() {
         By: <Link to={`/users/${post.userId}`}>{user.name}</Link>
       </span>
       <div>{post.body}</div>
+
       <h3 className="mt-4 mb-2">Comments</h3>
       <div className="card-stack">
         {comments.map((comment) => (
