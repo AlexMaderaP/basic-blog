@@ -84,15 +84,23 @@ export const router = createBrowserRouter([
             path: ":userId",
             element: <User />,
             loader: ({ params, request: { signal } }) => {
-              return fetch(`http://127.0.0.1:3000/users/${params.userId}`, {
-                signal,
-              }).then((res) => {
-                if (res.ok) return res.json();
-
-                return Promise.reject(
-                  `HTTP error status: ${res.status}\n ${res.statusText}`
-                );
-              });
+              return Promise.all([
+                fetch(`http://127.0.0.1:3000/users/${params.userId}`, {
+                  signal,
+                }),
+                fetch(`http://127.0.0.1:3000/posts?userId=${params.userId}`, {
+                  signal,
+                }),
+                fetch(`http://127.0.0.1:3000/todos?userId=${params.userId}`, {
+                  signal,
+                }),
+              ])
+                .then(([res1, res2, res3]) =>
+                  Promise.all([res1.json(), res2.json(), res3.json()])
+                )
+                .then(([user, posts, todos]) => {
+                  return { user, posts, todos };
+                });
             },
           },
         ],
