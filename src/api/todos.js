@@ -6,3 +6,10 @@ export function getTodos(options) {
     .then((res) => res.data)
     .catch((error) => Promise.reject(error));
 }
+
+export function getTodosQuery(options, query) {
+  return baseApi
+    .get(`/todos?q=${query}`, options)
+    .then((res) => res.data)
+    .catch((error) => Promise.reject(error));
+}
