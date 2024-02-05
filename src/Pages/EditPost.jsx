@@ -1,21 +1,26 @@
 import React from "react";
+import { getPostById, updateNewPost } from "../api/posts";
 import { getUsers } from "../api/users";
 import { Form, redirect, useActionData, useLoaderData } from "react-router-dom";
-import { createNewPost } from "../api/posts";
 
-function NewPost() {
+function EditPost() {
+  const { post, users } = useLoaderData();
   const errorMessage = useActionData();
-  const users = useLoaderData();
 
   return (
     <>
-      <h1 className="page-title">New Post</h1>
+      <h1 className="page-title">Edit Post</h1>
       <Form method="post" className="form">
         <div className="error-message">{errorMessage}</div>
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="title">Title</label>
-            <input type="text" name="title" id="title" />
+            <input
+              type="text"
+              name="title"
+              id="title"
+              defaultValue={post.title}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="userId">Author</label>
@@ -31,7 +36,7 @@ function NewPost() {
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="body">Body</label>
-            <textarea name="body" id="body"></textarea>
+            <textarea name="body" id="body" defaultValue={post.body}></textarea>
           </div>
         </div>
         <div className="form-row form-btn-row">
@@ -45,11 +50,14 @@ function NewPost() {
   );
 }
 
-function loader({ request: { signal } }) {
-  return getUsers({ signal });
+async function loader({ params, request: { signal } }) {
+  const post = await getPostById(params.postId, { signal });
+  const users = await getUsers({ signal });
+
+  return { post, users };
 }
 
-async function action({ request }) {
+async function action({ params, request }) {
   const formData = await request.formData();
 
   const title = formData.get("title");
@@ -65,13 +73,13 @@ async function action({ request }) {
     body,
   };
 
-  const post = await createNewPost(data);
+  await updateNewPost(params.postId, data);
 
-  return redirect("/");
+  return redirect(`/posts/${params.postId}`);
 }
 
-export const newPostRoute = {
+export const editPostRoute = {
   loader,
+  element: <EditPost />,
   action,
-  element: <NewPost />,
 };

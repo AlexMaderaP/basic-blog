@@ -14,3 +14,10 @@ export function createNewPost(options) {
     .then((res) => res.data)
     .catch((error) => Promise.reject(error));
 }
+
+export function updateNewPost(postId, options) {
+  return baseApi
+    .put(`/posts/${postId}`, options)
+    .then((res) => res.data)
+    .catch((error) => Promise.reject(error));
+}
