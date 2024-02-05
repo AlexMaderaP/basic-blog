@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Form, useLoaderData } from "react-router-dom";
 import { getTodos, getTodosQuery } from "../api/todos";
 import TodoItem from "../Components/TodoItem";
@@ -8,6 +8,11 @@ function Todos() {
     todos,
     searchParams: { query },
   } = useLoaderData();
+  const queryRef = useRef();
+
+  useEffect(() => {
+    queryRef.current.value = query;
+  }, [query]);
 
   return (
     <>
@@ -15,7 +20,7 @@ function Todos() {
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="query">Search</label>
-            <input type="search" name="query" id="query" defaultValue={query} />
+            <input type="search" name="query" id="query" ref={queryRef} />
           </div>
           <button className="btn">Search</button>
         </div>

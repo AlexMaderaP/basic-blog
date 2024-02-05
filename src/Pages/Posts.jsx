@@ -9,7 +9,15 @@ function Posts() {
 
   return (
     <>
-      <h1 className="page-title">Posts</h1>
+      <h1 className="page-title">
+        Posts
+        <div className="title-btns">
+          <a href="/posts/new" className="btn btn-outline">
+            New
+          </a>
+        </div>
+      </h1>
+
       <div className="card-grid">
         {posts.map((post) => (
           <PostItem key={post.id} post={post} />

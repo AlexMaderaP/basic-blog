@@ -3,6 +3,7 @@ import { postListRoute } from "./Pages/Posts";
 import { userListRoute } from "./Pages/Users";
 import { todoListRoute } from "./Pages/Todos";
 import { postRoute } from "./Pages/Post";
+import { newPostRoute } from "./Pages/NewPost";
 import { userRoute } from "./Pages/User";
 import Error from "./Pages/Error";
 import NavLayout from "./Layouts/NavLayout";
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 ...postListRoute,
+              },
+              {
+                path: "new",
+                ...newPostRoute,
               },
               {
                 path: ":postId",

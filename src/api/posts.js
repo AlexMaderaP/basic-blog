@@ -7,3 +7,10 @@ export function getPosts(options) {
 export function getPostById(postId, options) {
   return baseApi.get(`/posts/${postId}`, options).then((res) => res.data);
 }
+
+export function createNewPost(options) {
+  return baseApi
+    .post("/posts", options)
+    .then((res) => res.data)
+    .catch((error) => Promise.reject(error));
+}
