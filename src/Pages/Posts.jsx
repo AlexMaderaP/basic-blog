@@ -2,11 +2,13 @@ import React, { useEffect, useRef } from "react";
 import { Form, useLoaderData } from "react-router-dom";
 import PostItem from "../Components/PostItem";
 import { getPostsByQuery } from "../api/posts";
+import { getUsers } from "../api/users";
 
 function Posts() {
   const {
     posts,
-    searchParams: { query },
+    users,
+    searchParams: { query, userId },
   } = useLoaderData();
   const queryRef = useRef();
 
@@ -25,14 +27,30 @@ function Posts() {
         </div>
       </h1>
 
-      <Form class="form mb-4">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="query">Query</label>
+      <Form className="form mb-4">
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="query">Query</label>
             <input type="search" name="query" id="query" ref={queryRef} />
           </div>
-          <button class="btn">Filter</button>
         </div>
+        <div className="form-group">
+          <label htmlFor="userId">Author</label>
+          <select
+            type="search"
+            name="userId"
+            id="userId"
+            defaultValue={userId ? userId : ""}
+          >
+            <option value="">Any</option>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <button className="btn">Filter</button>
       </Form>
 
       <div className="card-grid">
@@ -47,9 +65,11 @@ function Posts() {
 async function loader({ request: { signal, url } }) {
   const searchParams = new URL(url).searchParams;
   const query = searchParams.get("query") || "";
+  const userId = searchParams.get("userId") || "";
   return {
-    searchParams: { query },
-    posts: await getPostsByQuery({ signal }, query),
+    searchParams: { query, userId },
+    posts: await getPostsByQuery({ signal }, query, userId),
+    users: await getUsers({ signal }),
   };
 }
 

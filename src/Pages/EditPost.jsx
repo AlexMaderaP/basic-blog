@@ -1,11 +1,19 @@
 import React from "react";
 import { getPostById, updateNewPost } from "../api/posts";
 import { getUsers } from "../api/users";
-import { Form, redirect, useActionData, useLoaderData } from "react-router-dom";
+import {
+  Form,
+  redirect,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom";
 
 function EditPost() {
   const { post, users } = useLoaderData();
   const errorMessage = useActionData();
+  const { state } = useNavigation();
+  const isSubmitting = state === "submitting";
 
   return (
     <>
@@ -43,7 +51,9 @@ function EditPost() {
           <a className="btn btn-outline" href="/posts">
             Cancel
           </a>
-          <button className="btn">Save</button>
+          <button disabled={isSubmitting} className="btn">
+            {isSubmitting ? "Submitting" : "Save"}
+          </button>
         </div>
       </Form>
     </>

@@ -4,8 +4,12 @@ export function getPosts(options) {
   return baseApi.get("/posts", options).then((res) => res.data);
 }
 
-export function getPostsByQuery(options, query) {
-  return baseApi.get(`/posts?q=${query}`, options).then((res) => res.data);
+export function getPostsByQuery(options, query, userId) {
+  const url = userId
+    ? `/posts?q=${query}&userId=${userId}`
+    : `/posts?q=${query}`;
+
+  return baseApi.get(url, options).then((res) => res.data);
 }
 
 export function getPostById(postId, options) {
