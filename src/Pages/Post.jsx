@@ -12,7 +12,7 @@ function Post() {
       <h1 className="page-title">
         {post.title}
         <div className="title-btns">
-          <Link className="btn btn-outline" to={`/posts/${post.id}/edit`}>
+          <Link className="btn btn-outline" to={`edit`}>
             Edit
           </Link>
         </div>

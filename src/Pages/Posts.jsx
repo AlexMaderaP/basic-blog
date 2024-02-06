@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { Form, Link, useLoaderData } from "react-router-dom";
 import PostItem from "../Components/PostItem";
-import { getPostsByQuery } from "../api/posts";
+import { getPosts } from "../api/posts";
 import { getUsers } from "../api/users";
+import Option from "../Components/Option";
 
 function Posts() {
   const {
@@ -21,7 +22,7 @@ function Posts() {
       <h1 className="page-title">
         Posts
         <div className="title-btns">
-          <Link to="/posts/new" className="btn btn-outline">
+          <Link to="new" className="btn btn-outline">
             New
           </Link>
         </div>
@@ -33,24 +34,22 @@ function Posts() {
             <label htmlFor="query">Query</label>
             <input type="search" name="query" id="query" ref={queryRef} />
           </div>
+          <div className="form-group">
+            <label htmlFor="userId">Author</label>
+            <select
+              type="search"
+              name="userId"
+              id="userId"
+              defaultValue={userId ? userId : ""}
+            >
+              <option value="">Any</option>
+              {users.map((user) => (
+                <Option key={user.id} user={user} />
+              ))}
+            </select>
+          </div>
+          <button className="btn">Filter</button>
         </div>
-        <div className="form-group">
-          <label htmlFor="userId">Author</label>
-          <select
-            type="search"
-            name="userId"
-            id="userId"
-            defaultValue={userId ? userId : ""}
-          >
-            <option value="">Any</option>
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <button className="btn">Filter</button>
       </Form>
 
       <div className="card-grid">
@@ -66,10 +65,16 @@ async function loader({ request: { signal, url } }) {
   const searchParams = new URL(url).searchParams;
   const query = searchParams.get("query") || "";
   const userId = searchParams.get("userId") || "";
+  const filterParams = { q: query };
+  if (userId !== "") filterParams.userId = userId;
+
+  const posts = getPosts({ signal, params: filterParams });
+  const users = getUsers({ signal });
+
   return {
     searchParams: { query, userId },
-    posts: await getPostsByQuery({ signal }, query, userId),
-    users: await getUsers({ signal }),
+    posts: await posts,
+    users: await users,
   };
 }
 
