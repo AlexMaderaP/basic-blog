@@ -1,14 +1,13 @@
 import React from "react";
 import { getUsers } from "../api/users";
 import {
-  Form,
   redirect,
   useActionData,
   useLoaderData,
   useNavigation,
 } from "react-router-dom";
 import { createNewPost } from "../api/posts";
-import Option from "../Components/Option";
+import PostForm from "../Components/PostForm";
 
 function NewPost() {
   const error = useActionData();
@@ -19,41 +18,7 @@ function NewPost() {
   return (
     <>
       <h1 className="page-title">New Post</h1>
-      <Form method="post" className="form">
-        <div className="form-row">
-          <div className={`form-group ${error?.title && "error"}`}>
-            <label htmlFor="title">Title</label>
-            <input type="text" name="title" id="title" />
-            {error?.title && <div className="error-message">{error.title}</div>}
-          </div>
-          <div className={`form-group ${error?.userId && "error"}`}>
-            <label htmlFor="userId">Author</label>
-            <select name="userId" id="userId">
-              {users.map((user) => (
-                <Option key={user.id} user={user} />
-              ))}
-            </select>
-            {error?.userId && (
-              <div className="error-message">{error.userId}</div>
-            )}
-          </div>
-        </div>
-        <div className="form-row">
-          <div className={`form-group ${error?.body && "error"}`}>
-            <label htmlFor="body">Body</label>
-            <textarea name="body" id="body"></textarea>
-            {error?.body && <div className="error-message">{error.body}</div>}
-          </div>
-        </div>
-        <div className="form-row form-btn-row">
-          <a className="btn btn-outline" href="/posts">
-            Cancel
-          </a>
-          <button className="btn" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting" : "Save"}
-          </button>
-        </div>
-      </Form>
+      <PostForm error={error} users={users} isSubmitting={isSubmitting} />
     </>
   );
 }
@@ -89,9 +54,9 @@ async function action({ request }) {
     body,
   };
 
-  await createNewPost(data);
+  const post = await createNewPost(data, { signal: request.signal });
 
-  return redirect("/");
+  return redirect(`/posts/${post.id}`);
 }
 
 export const newPostRoute = {

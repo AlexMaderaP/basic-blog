@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Form, useLoaderData } from "react-router-dom";
+import { Form, Link, useLoaderData } from "react-router-dom";
 import PostItem from "../Components/PostItem";
 import { getPostsByQuery } from "../api/posts";
 import { getUsers } from "../api/users";
@@ -21,9 +21,9 @@ function Posts() {
       <h1 className="page-title">
         Posts
         <div className="title-btns">
-          <a href="/posts/new" className="btn btn-outline">
+          <Link to="/posts/new" className="btn btn-outline">
             New
-          </a>
+          </Link>
         </div>
       </h1>
 

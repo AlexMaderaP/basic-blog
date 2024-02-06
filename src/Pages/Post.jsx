@@ -12,9 +12,9 @@ function Post() {
       <h1 className="page-title">
         {post.title}
         <div className="title-btns">
-          <a className="btn btn-outline" href={`/posts/${post.id}/edit`}>
+          <Link className="btn btn-outline" to={`/posts/${post.id}/edit`}>
             Edit
-          </a>
+          </Link>
         </div>
       </h1>
       <span>

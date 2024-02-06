@@ -16,9 +16,9 @@ export function getPostById(postId, options) {
   return baseApi.get(`/posts/${postId}`, options).then((res) => res.data);
 }
 
-export function createNewPost(options) {
+export function createNewPost(data, options) {
   return baseApi
-    .post("/posts", options)
+    .post("/posts", data, options)
     .then((res) => res.data)
     .catch((error) => Promise.reject(error));
 }
