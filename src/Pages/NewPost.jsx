@@ -8,9 +8,10 @@ import {
   useNavigation,
 } from "react-router-dom";
 import { createNewPost } from "../api/posts";
+import Option from "../Components/Option";
 
 function NewPost() {
-  const errorMessage = useActionData();
+  const error = useActionData();
   const users = useLoaderData();
   const { state } = useNavigation();
   const isSubmitting = state === "submitting";
@@ -19,27 +20,29 @@ function NewPost() {
     <>
       <h1 className="page-title">New Post</h1>
       <Form method="post" className="form">
-        <div className="error-message">{errorMessage}</div>
         <div className="form-row">
-          <div className="form-group">
+          <div className={`form-group ${error?.title && "error"}`}>
             <label htmlFor="title">Title</label>
             <input type="text" name="title" id="title" />
+            {error?.title && <div className="error-message">{error.title}</div>}
           </div>
-          <div className="form-group">
+          <div className={`form-group ${error?.userId && "error"}`}>
             <label htmlFor="userId">Author</label>
             <select name="userId" id="userId">
               {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name}
-                </option>
+                <Option key={user.id} user={user} />
               ))}
             </select>
+            {error?.userId && (
+              <div className="error-message">{error.userId}</div>
+            )}
           </div>
         </div>
         <div className="form-row">
-          <div className="form-group">
+          <div className={`form-group ${error?.body && "error"}`}>
             <label htmlFor="body">Body</label>
             <textarea name="body" id="body"></textarea>
+            {error?.body && <div className="error-message">{error.body}</div>}
           </div>
         </div>
         <div className="form-row form-btn-row">
@@ -65,8 +68,19 @@ async function action({ request }) {
   const title = formData.get("title");
   const userId = formData.get("userId");
   const body = formData.get("body");
-  if (title === "" || body === "") {
-    return "Please fill the details";
+  const error = {};
+
+  if (!title) {
+    error.title = "Title is required";
+  }
+  if (!body) {
+    error.body = "Body is required";
+  }
+  if (!userId) {
+    error.userId = "UserId is required";
+  }
+  if (error.title || error.body || error.userId) {
+    return error;
   }
 
   const data = {
@@ -75,7 +89,7 @@ async function action({ request }) {
     body,
   };
 
-  const post = await createNewPost(data);
+  await createNewPost(data);
 
   return redirect("/");
 }
