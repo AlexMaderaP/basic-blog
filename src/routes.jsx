@@ -1,4 +1,4 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { postListRoute } from "./Pages/Posts";
 import { userListRoute } from "./Pages/Users";
 import { todoListRoute } from "./Pages/Todos";
@@ -9,7 +9,7 @@ import { userRoute } from "./Pages/User";
 import Error from "./Pages/Error";
 import NavLayout from "./Layouts/NavLayout";
 
-export const router = createBrowserRouter([
+export const routes = [
   {
     element: <NavLayout />,
     children: [
@@ -62,4 +62,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+];

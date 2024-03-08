@@ -9,7 +9,7 @@ function PostItem({ post }) {
         <div className="card-preview-text">{post.body}</div>
       </div>
       <div className="card-footer">
-        <NavLink className="btn" to={`${post.id.toString()}`}>
+        <NavLink className="btn" to={`/posts/${post.id.toString()}`}>
           View
         </NavLink>
       </div>
