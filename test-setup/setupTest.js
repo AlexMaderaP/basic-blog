@@ -17,3 +17,5 @@ afterEach(() => {
 afterAll(() => {
   mockServer.close();
 });
+
+Object.defineProperty(window, "scrollTo", { value: () => {} });
