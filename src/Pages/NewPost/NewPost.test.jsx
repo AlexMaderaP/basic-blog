@@ -1,9 +1,9 @@
 import userEvent from "@testing-library/user-event";
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
-import { routes } from "../routes";
+import { routes } from "../../routes";
 import { render, screen } from "@testing-library/react";
-import { mockServer } from "../../test-setup/mockServer";
+import { mockServer } from "../../../test-setup/mockServer";
 import { HttpResponse, http } from "msw";
 
 describe("New Post component", () => {

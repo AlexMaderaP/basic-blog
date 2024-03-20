@@ -1,13 +1,15 @@
 import { Navigate } from "react-router-dom";
-import { postListRoute } from "./Pages/Posts";
+import PostList from "./Pages/PostList/PostList";
 import { userListRoute } from "./Pages/Users";
 import { todoListRoute } from "./Pages/Todos";
 import { postRoute } from "./Pages/Post";
-import { newPostRoute } from "./Pages/NewPost";
+import { newPostRoute } from "./Pages/NewPost/NewPost";
 import { editPostRoute } from "./Pages/EditPost";
 import { userRoute } from "./Pages/User";
 import Error from "./Pages/Error";
 import NavLayout from "./Layouts/NavLayout";
+import { newPostLoader } from "./Pages/NewPost/newPostLoader";
+import postListLoader from "./Pages/PostList/postListLoader";
 
 export const routes = [
   {
@@ -22,11 +24,13 @@ export const routes = [
             children: [
               {
                 index: true,
-                ...postListRoute,
+                element: <PostList />,
+                loader: postListLoader,
               },
               {
                 path: "new",
                 ...newPostRoute,
+                loader: newPostLoader,
               },
               {
                 path: ":postId",

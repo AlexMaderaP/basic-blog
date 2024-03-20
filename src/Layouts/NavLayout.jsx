@@ -9,8 +9,7 @@ function NavLayout() {
     <>
       <Navbar />
       <ScrollRestoration />
-      {state === "loading" && <div className="loading-spinner"></div>}
-      <div className={`container ${state === "loading" && "loading"}`}>
+      <div className={`container`}>
         <Outlet />
       </div>
     </>
