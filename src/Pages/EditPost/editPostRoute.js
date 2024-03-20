@@ -1,26 +1,12 @@
-import React from "react";
-import { getPostById, updatePost } from "../api/posts";
-import { getUsers } from "../api/users";
-import { redirect, useActionData, useLoaderData } from "react-router-dom";
-import PostForm from "../Components/PostForm";
-
-function EditPost() {
-  const { post, users } = useLoaderData();
-  const error = useActionData();
-
-  return (
-    <>
-      <h1 className="page-title">Edit Post</h1>
-      <PostForm error={error} post={post} users={users} />
-    </>
-  );
-}
+import { defer, redirect } from "react-router-dom";
+import { getPostById, updatePost } from "../../api/posts";
+import { getUsers } from "../../api/users";
 
 async function loader({ params, request: { signal } }) {
   const post = getPostById(params.postId, { signal });
   const users = getUsers({ signal });
 
-  return { post: await post, users: await users };
+  return defer({ postPromise: post, usersPromise: users });
 }
 
 async function action({ params, request }) {
@@ -57,6 +43,5 @@ async function action({ params, request }) {
 
 export const editPostRoute = {
   loader,
-  element: <EditPost />,
   action,
 };
