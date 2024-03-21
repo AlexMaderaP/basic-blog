@@ -1,5 +1,11 @@
 import React, { Suspense, useEffect, useRef } from "react";
-import { Await, Form, Link, useLoaderData } from "react-router-dom";
+import {
+  Await,
+  Form,
+  Link,
+  useAsyncValue,
+  useLoaderData,
+} from "react-router-dom";
 import PostItem from "../../Components/PostItem";
 import Option from "../../Components/Option";
 import CardFallback from "../../Components/CardFallback";
@@ -45,7 +51,7 @@ export default function PostList() {
             >
               <Suspense fallback={<UsersFallback />}>
                 <Await resolve={usersPromise}>
-                  {(users) => <Users users={users} />}
+                  <Users />
                 </Await>
               </Suspense>
             </select>
@@ -56,14 +62,16 @@ export default function PostList() {
 
       <Suspense fallback={<CardFallback />}>
         <Await resolve={postsPromise}>
-          {(posts) => <Posts posts={posts} />}
+          <Posts />
         </Await>
       </Suspense>
     </>
   );
 }
 
-function Posts({ posts }) {
+function Posts() {
+  const posts = useAsyncValue();
+
   return (
     <div className="card-grid">
       {posts.map((post) => (
@@ -73,7 +81,8 @@ function Posts({ posts }) {
   );
 }
 
-function Users({ users }) {
+function Users() {
+  const users = useAsyncValue();
   return (
     <>
       <option value="">Any</option>

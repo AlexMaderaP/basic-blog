@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Await, useLoaderData } from "react-router-dom";
+import { Await, useAsyncValue, useLoaderData } from "react-router-dom";
 import PostItem from "../../Components/PostItem";
 import TodoItem from "../../Components/TodoItem";
 import CardFallback from "../../Components/CardFallback";
@@ -12,28 +12,29 @@ export default function User() {
     <>
       <Suspense fallback={<UserInfoFallback />}>
         <Await resolve={userPromise}>
-          {(user) => <UserInfo user={user} />}
+          <UserInfo />
         </Await>
       </Suspense>
 
       <h3 className="mt-4 mb-2">Posts</h3>
       <Suspense fallback={<CardFallback numCards={4} />}>
         <Await resolve={postsPromise}>
-          {(posts) => <Posts posts={posts} />}
+          <Posts />
         </Await>
       </Suspense>
 
       <h3 className="mt-4 mb-2">Todos</h3>
       <Suspense fallback={<TodosFallback lines={6} />}>
         <Await resolve={todosPromise}>
-          {(todos) => <Todos todos={todos} />}
+          <Todos />
         </Await>
       </Suspense>
     </>
   );
 }
 
-function UserInfo({ user }) {
+function UserInfo() {
+  const user = useAsyncValue();
   return (
     <>
       <h1 className="page-title">{user.name}</h1>
@@ -52,7 +53,8 @@ function UserInfo({ user }) {
   );
 }
 
-function Posts({ posts }) {
+function Posts() {
+  const posts = useAsyncValue();
   return (
     <div className="card-grid">
       {posts.map((post) => (
@@ -62,7 +64,8 @@ function Posts({ posts }) {
   );
 }
 
-function Todos({ todos }) {
+function Todos() {
+  const todos = useAsyncValue();
   return (
     <ul>
       {todos.map((todo) => (

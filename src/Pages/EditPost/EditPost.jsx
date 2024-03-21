@@ -1,5 +1,10 @@
 import React, { Suspense } from "react";
-import { Await, useActionData, useLoaderData } from "react-router-dom";
+import {
+  Await,
+  useActionData,
+  useAsyncValue,
+  useLoaderData,
+} from "react-router-dom";
 import PostForm from "../../Components/PostForm";
 import PostFormFallback from "../../Components/PostFormFallback";
 
@@ -16,12 +21,14 @@ export default function EditPost() {
             (value) => value
           )}
         >
-          {(value) => {
-            const [post, users] = value;
-            return <PostForm error={error} post={post} users={users} />;
-          }}
+          <PostFormAsync error={error} />
         </Await>
       </Suspense>
     </>
   );
+}
+
+function PostFormAsync({ error }) {
+  const [post, users] = useAsyncValue();
+  return <PostForm error={error} post={post} users={users} />;
 }

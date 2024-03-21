@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Await, Link, useLoaderData } from "react-router-dom";
+import { Await, Link, useAsyncValue, useLoaderData } from "react-router-dom";
 import { getUserById } from "../../api/users";
 
 export default function Post() {
@@ -9,49 +9,60 @@ export default function Post() {
     <>
       <Suspense fallback={<PostFallback />}>
         <Await resolve={postPromise}>
-          {(post) => (
-            <>
-              <h1 className="page-title">
-                {post.title}
-                <div className="title-btns">
-                  <Link className="btn btn-outline" to={`edit`}>
-                    Edit
-                  </Link>
-                </div>
-              </h1>
-              <span>
-                By:{" "}
-                <Link to={`/users/${post.userId}`}>
-                  <Suspense fallback="Loading user...">
-                    <Await resolve={getUserById(post.userId)}>
-                      {(user) => <>{user.name}</>}
-                    </Await>
-                  </Suspense>
-                </Link>
-              </span>
-              <div>{post.body}</div>
-            </>
-          )}
+          <PostInfo />
         </Await>
       </Suspense>
       <h3 className="mt-4 mb-2">Comments</h3>
       <Suspense fallback={<CommentsFallback />}>
         <Await resolve={commentsPromise}>
-          {(comments) => (
-            <div className="card-stack">
-              {comments.map((comment) => (
-                <div key={comment.id} className="card">
-                  <div className="card-body">
-                    <div className="text-sm mb-1">{comment.email}</div>
-                    {comment.body}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          <CommentsList />
         </Await>
       </Suspense>
     </>
+  );
+}
+
+function PostInfo() {
+  const post = useAsyncValue();
+
+  return (
+    <>
+      <h1 className="page-title">
+        {post.title}
+        <div className="title-btns">
+          <Link className="btn btn-outline" to={`edit`}>
+            Edit
+          </Link>
+        </div>
+      </h1>
+      <span>
+        By:{" "}
+        <Link to={`/users/${post.userId}`}>
+          <Suspense fallback="Loading user...">
+            <Await resolve={getUserById(post.userId)}>
+              {(user) => <>{user.name}</>}
+            </Await>
+          </Suspense>
+        </Link>
+      </span>
+      <div>{post.body}</div>
+    </>
+  );
+}
+
+function CommentsList() {
+  const comments = useAsyncValue();
+  return (
+    <div className="card-stack">
+      {comments.map((comment) => (
+        <div key={comment.id} className="card">
+          <div className="card-body">
+            <div className="text-sm mb-1">{comment.email}</div>
+            {comment.body}
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
 
