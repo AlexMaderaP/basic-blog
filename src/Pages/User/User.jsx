@@ -3,6 +3,7 @@ import { Await, useLoaderData } from "react-router-dom";
 import PostItem from "../../Components/PostItem";
 import TodoItem from "../../Components/TodoItem";
 import CardFallback from "../../Components/CardFallback";
+import TodosFallback from "../../Components/TodosFallback";
 
 export default function User() {
   const { userPromise, postsPromise, todosPromise } = useLoaderData();
@@ -66,16 +67,6 @@ function Todos({ todos }) {
     <ul>
       {todos.map((todo) => (
         <TodoItem key={todo.id} {...todo} />
-      ))}
-    </ul>
-  );
-}
-
-function TodosFallback({ lines }) {
-  return (
-    <ul>
-      {Array.from({ length: lines }, (_, idx) => idx).map((idx) => (
-        <li key={idx} className="skeleton"></li>
       ))}
     </ul>
   );

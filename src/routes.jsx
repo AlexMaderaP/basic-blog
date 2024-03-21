@@ -1,6 +1,5 @@
 import { Navigate } from "react-router-dom";
 import NavLayout from "./Layouts/NavLayout";
-import { todoListRoute } from "./Pages/Todos";
 import Error from "./Pages/Error";
 import PostList from "./Pages/PostList/PostList";
 import postListLoader from "./Pages/PostList/postListLoader";
@@ -14,6 +13,8 @@ import UserList from "./Pages/UserList/UserList";
 import usersListLoader from "./Pages/UserList/userListLoader";
 import User from "./Pages/User/User";
 import userLoader from "./Pages/User/userLoader";
+import Todos from "./Pages/Todos/Todos";
+import todosLoader from "./Pages/Todos/todosLoader";
 
 export const routes = [
   {
@@ -62,7 +63,8 @@ export const routes = [
           },
           {
             path: "/todos",
-            ...todoListRoute,
+            element: <Todos />,
+            loader: todosLoader,
           },
           {
             path: "*",
