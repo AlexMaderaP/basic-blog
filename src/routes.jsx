@@ -1,20 +1,22 @@
 import { Navigate } from "react-router-dom";
+import { lazy } from "react";
 import NavLayout from "./Layouts/NavLayout";
 import Error from "./Pages/Error";
-import PostList from "./Pages/PostList/PostList";
 import postListLoader from "./Pages/PostList/postListLoader";
-import Post from "./Pages/Post/Post";
 import postLoader from "./Pages/Post/postLoader";
-import NewPost from "./Pages/NewPost/NewPost";
-import { newPostRoute } from "./Pages/NewPost/newPostLoader";
-import EditPost from "./Pages/EditPost/EditPost";
-import { editPostRoute } from "./Pages/EditPost/editPostRoute";
-import UserList from "./Pages/UserList/UserList";
 import usersListLoader from "./Pages/UserList/userListLoader";
-import User from "./Pages/User/User";
 import userLoader from "./Pages/User/userLoader";
-import Todos from "./Pages/Todos/Todos";
 import todosLoader from "./Pages/Todos/todosLoader";
+import { newPostRoute } from "./Pages/NewPost/newPostLoader";
+import { editPostRoute } from "./Pages/EditPost/editPostRoute";
+
+const PostList = lazy(() => import("./Pages/PostList/PostList"));
+const Post = lazy(() => import("./Pages/Post/Post"));
+const NewPost = lazy(() => import("./Pages/NewPost/NewPost"));
+const EditPost = lazy(() => import("./Pages/EditPost/EditPost"));
+const UserList = lazy(() => import("./Pages/UserList/UserList"));
+const User = lazy(() => import("./Pages/User/User"));
+const Todos = lazy(() => import("./Pages/Todos/Todos"));
 
 export const routes = [
   {

@@ -80,8 +80,8 @@ describe("New Post component", () => {
 
     expect(newPostApiHandler).toHaveBeenCalledOnce();
 
-    expect(screen.getByText("New Post")).toBeInTheDocument();
-    expect(screen.getByText("Alex")).toBeInTheDocument();
-    expect(screen.getByText("Body post")).toBeInTheDocument();
+    expect(await screen.findByText("New Post")).toBeInTheDocument();
+    expect(await screen.getByText("Alex")).toBeInTheDocument();
+    expect(await screen.findByText("Body post")).toBeInTheDocument();
   });
 });
