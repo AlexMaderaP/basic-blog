@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Await, useActionData, useLoaderData } from "react-router-dom";
 import PostForm from "../../Components/PostForm";
-import SuspensePostForm from "../../Components/SuspensePostForm";
+import PostFormFallback from "../../Components/PostFormFallback";
 
 export default function EditPost() {
   const { postPromise, usersPromise } = useLoaderData();
@@ -10,7 +10,7 @@ export default function EditPost() {
   return (
     <>
       <h1 className="page-title">Edit Post</h1>
-      <Suspense fallback={<SuspensePostForm />}>
+      <Suspense fallback={<PostFormFallback />}>
         <Await
           resolve={Promise.all([postPromise, usersPromise]).then(
             (value) => value

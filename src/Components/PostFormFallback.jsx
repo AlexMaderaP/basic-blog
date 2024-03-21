@@ -1,6 +1,6 @@
 import FormGroup from "./FormGroup";
 
-export default function SuspensePostForm() {
+export default function PostFormFallback() {
   return (
     <>
       <div className="form-row">

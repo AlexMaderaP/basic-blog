@@ -2,7 +2,7 @@ import { defer, redirect } from "react-router-dom";
 import { getPostById, updatePost } from "../../api/posts";
 import { getUsers } from "../../api/users";
 
-async function loader({ params, request: { signal } }) {
+function loader({ params, request: { signal } }) {
   const post = getPostById(params.postId, { signal });
   const users = getUsers({ signal });
 

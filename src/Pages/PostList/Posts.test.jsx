@@ -1,10 +1,10 @@
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
-import { routes } from "../routes";
-import { mockServer } from "../../test-setup/mockServer";
+import { routes } from "../../routes";
+import { mockServer } from "../../../test-setup/mockServer";
 import { render, screen } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
-import { posts } from "../../test-setup/postsMock";
+import { posts } from "../../../test-setup/postsMock";
 import userEvent from "@testing-library/user-event";
 
 describe("Post Lists component", () => {

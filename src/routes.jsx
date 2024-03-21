@@ -1,8 +1,6 @@
 import { Navigate } from "react-router-dom";
 import NavLayout from "./Layouts/NavLayout";
-import { userListRoute } from "./Pages/Users";
 import { todoListRoute } from "./Pages/Todos";
-import { userRoute } from "./Pages/User";
 import Error from "./Pages/Error";
 import PostList from "./Pages/PostList/PostList";
 import postListLoader from "./Pages/PostList/postListLoader";
@@ -12,6 +10,10 @@ import NewPost from "./Pages/NewPost/NewPost";
 import { newPostRoute } from "./Pages/NewPost/newPostLoader";
 import EditPost from "./Pages/EditPost/EditPost";
 import { editPostRoute } from "./Pages/EditPost/editPostRoute";
+import UserList from "./Pages/UserList/UserList";
+import usersListLoader from "./Pages/UserList/userListLoader";
+import User from "./Pages/User/User";
+import userLoader from "./Pages/User/userLoader";
 
 export const routes = [
   {
@@ -48,11 +50,13 @@ export const routes = [
             children: [
               {
                 index: true,
-                ...userListRoute,
+                element: <UserList />,
+                loader: usersListLoader,
               },
               {
                 path: ":userId",
-                ...userRoute,
+                element: <User />,
+                loader: userLoader,
               },
             ],
           },

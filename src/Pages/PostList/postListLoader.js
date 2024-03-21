@@ -2,7 +2,7 @@ import { defer } from "react-router-dom";
 import { getPosts } from "../../api/posts";
 import { getUsers } from "../../api/users";
 
-async function postListLoader({ request: { signal, url } }) {
+function postListLoader({ request: { signal, url } }) {
   const searchParams = new URL(url).searchParams;
   const query = searchParams.get("query") || "";
   const userId = searchParams.get("userId") || "";

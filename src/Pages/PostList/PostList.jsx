@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useRef } from "react";
 import { Await, Form, Link, useLoaderData } from "react-router-dom";
 import PostItem from "../../Components/PostItem";
 import Option from "../../Components/Option";
+import CardFallback from "../../Components/CardFallback";
 
 export default function PostList() {
   const {
@@ -32,6 +33,8 @@ export default function PostList() {
             <label htmlFor="query">Query</label>
             <input type="search" name="query" id="query" ref={queryRef} />
           </div>
+        </div>
+        <div className="form-row">
           <div className="form-group">
             <label htmlFor="userId">Author</label>
             <select
@@ -51,7 +54,7 @@ export default function PostList() {
         </div>
       </Form>
 
-      <Suspense fallback={<PostListFallback />}>
+      <Suspense fallback={<CardFallback />}>
         <Await resolve={postsPromise}>
           {(posts) => <Posts posts={posts} />}
         </Await>
@@ -83,29 +86,4 @@ function Users({ users }) {
 
 function UsersFallback() {
   return <option className="skeleton-input">Loading...</option>;
-}
-
-function PostListFallback() {
-  return (
-    <div className="card-grid">
-      {Array.from({ length: 6 }, (_, idx) => idx).map((idx) => (
-        <div key={idx} className="card">
-          <div className="card-header">
-            <div className="skeleton"></div>
-          </div>
-          <div className="card-body">
-            <div className="card-preview-text ">
-              <div className="skeleton"></div>
-              <div className="skeleton"></div>
-              <div className="skeleton"></div>
-              <div className="skeleton"></div>
-            </div>
-          </div>
-          <div className="card-footer">
-            <div className="skeleton skeleton-btn"></div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
 }
