@@ -4,6 +4,7 @@ import PostItem from "../../Components/PostItem";
 import TodoItem from "../../Components/TodoItem";
 import CardFallback from "../../Components/CardFallback";
 import TodosFallback from "../../Components/TodosFallback";
+import { Skeleton } from "../../Components/Skeleton";
 
 export default function User() {
   const { userPromise, postsPromise, todosPromise } = useLoaderData();
@@ -79,19 +80,19 @@ function UserInfoFallback() {
   return (
     <>
       <h1 className="page-title">
-        <div className="skeleton"></div>
+        <Skeleton />
       </h1>
       <div className="page-subtitle">
-        <div className="skeleton"></div>
+        <Skeleton short />
       </div>
       <div className="form-row">
-        <b>Company:</b> <div className="skeleton"></div>
+        <b>Company:</b> <Skeleton short />
       </div>
       <div className="form-row">
-        <b>Website:</b> <div className="skeleton"></div>
+        <b>Website:</b> <Skeleton short />
       </div>
       <div className="form-row">
-        <b>Address:</b> <div className="skeleton"></div>
+        <b>Address:</b> <Skeleton short />
       </div>
     </>
   );

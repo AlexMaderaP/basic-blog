@@ -1,9 +1,13 @@
+import { Skeleton, SkeletonList } from "./Skeleton";
+
 export default function TodosFallback({ lines }) {
   return (
     <ul>
-      {Array.from({ length: lines }, (_, idx) => idx).map((idx) => (
-        <li key={idx} className="skeleton"></li>
-      ))}
+      <SkeletonList amount={lines}>
+        <li>
+          <Skeleton short />
+        </li>
+      </SkeletonList>
     </ul>
   );
 }

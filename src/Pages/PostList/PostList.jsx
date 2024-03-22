@@ -5,9 +5,11 @@ import {
   Link,
   useAsyncValue,
   useLoaderData,
+  useNavigation,
 } from "react-router-dom";
 import PostItem from "../../Components/PostItem";
 import Option from "../../Components/Option";
+import FormGroup from "../../Components/FormGroup";
 import CardFallback from "../../Components/CardFallback";
 
 export default function PostList() {
@@ -17,9 +19,11 @@ export default function PostList() {
     searchParams: { query, userId },
   } = useLoaderData();
   const queryRef = useRef();
+  const { state } = useNavigation();
+  const isLoading = state === "loading";
 
   useEffect(() => {
-    queryRef.current.value = query;
+    queryRef.current.value = query || "";
   }, [query]);
 
   return (
@@ -35,28 +39,23 @@ export default function PostList() {
 
       <Form className="form mb-4">
         <div className="form-row">
-          <div className="form-group">
+          <FormGroup>
             <label htmlFor="query">Query</label>
             <input type="search" name="query" id="query" ref={queryRef} />
-          </div>
+          </FormGroup>
         </div>
         <div className="form-row">
-          <div className="form-group">
+          <FormGroup>
             <label htmlFor="userId">Author</label>
-            <select
-              type="search"
-              name="userId"
-              id="userId"
-              defaultValue={userId ? userId : ""}
-            >
-              <Suspense fallback={<UsersFallback />}>
-                <Await resolve={usersPromise}>
-                  <Users />
-                </Await>
-              </Suspense>
-            </select>
-          </div>
-          <button className="btn">Filter</button>
+            <Suspense fallback={<UsersFallback />}>
+              <Await resolve={usersPromise}>
+                <Users userId={userId} />
+              </Await>
+            </Suspense>
+          </FormGroup>
+          <button className="btn" disabled={isLoading}>
+            {isLoading ? "Filtering" : "Filter"}
+          </button>
         </div>
       </Form>
 
@@ -81,18 +80,22 @@ function Posts() {
   );
 }
 
-function Users() {
+function Users({ userId }) {
   const users = useAsyncValue();
   return (
-    <>
+    <select type="search" name="userId" id="userId" defaultValue={userId || ""}>
       <option value="">Any</option>
       {users.map((user) => (
         <Option key={user.id} user={user} />
       ))}
-    </>
+    </select>
   );
 }
 
 function UsersFallback() {
-  return <option className="skeleton-input">Loading...</option>;
+  return (
+    <select type="search" name="userId" id="userId" disabled>
+      <option value="">Loading...</option>
+    </select>
+  );
 }

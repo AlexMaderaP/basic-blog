@@ -1,15 +1,15 @@
 import React, { Suspense } from "react";
 import { Await, Link, useAsyncValue, useLoaderData } from "react-router-dom";
-import { getUserById } from "../../api/users";
+import { Skeleton, SkeletonList } from "../../Components/Skeleton";
 
 export default function Post() {
-  const { postPromise, commentsPromise } = useLoaderData();
+  const { postPromise, commentsPromise, userPromise } = useLoaderData();
 
   return (
     <>
       <Suspense fallback={<PostFallback />}>
         <Await resolve={postPromise}>
-          <PostInfo />
+          <PostInfo userPromise={userPromise} />
         </Await>
       </Suspense>
       <h3 className="mt-4 mb-2">Comments</h3>
@@ -22,7 +22,7 @@ export default function Post() {
   );
 }
 
-function PostInfo() {
+function PostInfo({ userPromise }) {
   const post = useAsyncValue();
 
   return (
@@ -39,9 +39,7 @@ function PostInfo() {
         By:{" "}
         <Link to={`/users/${post.userId}`}>
           <Suspense fallback="Loading user...">
-            <Await resolve={getUserById(post.userId)}>
-              {(user) => <>{user.name}</>}
-            </Await>
+            <Await resolve={userPromise}>{(user) => <>{user.name}</>}</Await>
           </Suspense>
         </Link>
       </span>
@@ -70,17 +68,21 @@ function PostFallback() {
   return (
     <>
       <h1 className="page-title">
-        <div className="skeleton"></div>
-        <div className="skeleton-btn"></div>
+        <Skeleton />
+        <div className="title-btns">
+          <Link className="btn btn-outline" to={`edit`}>
+            Edit
+          </Link>
+        </div>
       </h1>
       <div className="form-row">
-        By: <div className="skeleton"></div>
+        By: <Skeleton short />
       </div>
       <div>
-        <div className="skeleton"></div>
-        <div className="skeleton"></div>
-        <div className="skeleton"></div>
-        <div className="skeleton"></div>
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
       </div>
     </>
   );
@@ -89,19 +91,20 @@ function PostFallback() {
 function CommentsFallback() {
   return (
     <div className="card-stack">
-      <div className="card">
-        <div className="card-body">
-          <div className="text-sm mb-1">
-            <div className="skeleton"></div>
-          </div>
-          <div>
-            <div className="skeleton"></div>
-            <div className="skeleton"></div>
-            <div className="skeleton"></div>
-            <div className="skeleton"></div>
+      <SkeletonList amount={3}>
+        <div className="card">
+          <div className="card-body">
+            <div className="text-sm mb-1">
+              <Skeleton short />
+            </div>
+            <div>
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </div>
           </div>
         </div>
-      </div>
+      </SkeletonList>
     </div>
   );
 }

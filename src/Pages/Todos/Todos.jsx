@@ -1,5 +1,11 @@
 import React, { Suspense, useEffect, useRef } from "react";
-import { Await, Form, useAsyncValue, useLoaderData } from "react-router-dom";
+import {
+  Await,
+  Form,
+  useAsyncValue,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom";
 import TodoItem from "../../Components/TodoItem";
 import TodosFallback from "../../Components/TodosFallback";
 
@@ -9,6 +15,8 @@ export default function Todos() {
     searchParams: { query },
   } = useLoaderData();
   const queryRef = useRef();
+  const { state } = useNavigation();
+  const isLoading = state === "loading";
 
   useEffect(() => {
     queryRef.current.value = query;
@@ -22,7 +30,9 @@ export default function Todos() {
             <label htmlFor="query">Search</label>
             <input type="search" name="query" id="query" ref={queryRef} />
           </div>
-          <button className="btn">Search</button>
+          <button className="btn" disabled={isLoading}>
+            {isLoading ? "Searching" : "Search"}
+          </button>
         </div>
       </Form>
 

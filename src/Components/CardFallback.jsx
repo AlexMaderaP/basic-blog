@@ -1,25 +1,24 @@
 import React from "react";
+import { Skeleton, SkeletonButton, SkeletonList } from "./Skeleton";
 
 function CardFallback({ numCards = 6 }) {
   return (
     <div className="card-grid">
-      {Array.from({ length: numCards }, (_, idx) => idx).map((idx) => (
-        <div key={idx} className="card">
+      <SkeletonList className="card" amount={numCards}>
+        <div className="card">
           <div className="card-header">
-            <div className="skeleton"></div>
+            <Skeleton short />
           </div>
           <div className="card-body">
-            <div className="card-preview-text ">
-              <div className="skeleton"></div>
-              <div className="skeleton"></div>
-              <div className="skeleton"></div>
-            </div>
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
           </div>
           <div className="card-footer">
-            <div className="skeleton skeleton-btn"></div>
+            <SkeletonButton />
           </div>
         </div>
-      ))}
+      </SkeletonList>
     </div>
   );
 }
