@@ -1,4 +1,5 @@
 import FormGroup from "./FormGroup";
+import { SkeletonInput, SkeletonSelect } from "./Skeleton";
 
 export default function PostFormFallback() {
   return (
@@ -6,17 +7,17 @@ export default function PostFormFallback() {
       <div className="form-row">
         <FormGroup>
           <label>Title</label>
-          <input className="skeleton skeleton-input" />
+          <SkeletonInput />
         </FormGroup>
         <FormGroup>
           <label htmlFor="userId">Author</label>
-          <input className="skeleton skeleton-input" />
+          <SkeletonSelect />
         </FormGroup>
       </div>
       <div className="form-row">
         <FormGroup>
           <label htmlFor="body">Body</label>
-          <div className="skeleton skeleton-input"></div>
+          <SkeletonInput large />
         </FormGroup>
       </div>
     </>

@@ -1,9 +1,16 @@
-import React from "react";
-import { Form, Link, useNavigation } from "react-router-dom";
+import React, { Suspense } from "react";
+import {
+  Await,
+  Form,
+  Link,
+  useAsyncValue,
+  useNavigation,
+} from "react-router-dom";
 import Option from "./Option";
 import FormGroup from "./FormGroup";
+import { SkeletonSelect } from "./Skeleton";
 
-function PostForm({ error = {}, post = {}, users }) {
+function PostForm({ error = {}, post = {}, usersPromise }) {
   const { state } = useNavigation();
   const isSubmitting = state === "submitting";
 
@@ -21,11 +28,11 @@ function PostForm({ error = {}, post = {}, users }) {
         </FormGroup>
         <FormGroup errorMessage={error.userId}>
           <label htmlFor="userId">Author</label>
-          <select name="userId" id="userId">
-            {users.map((user) => (
-              <Option key={user.id} user={user} />
-            ))}
-          </select>
+          <Suspense fallback={<SkeletonSelect />}>
+            <Await resolve={usersPromise}>
+              <Users userId={post.userId || ""} />
+            </Await>
+          </Suspense>
         </FormGroup>
       </div>
       <div className="form-row">
@@ -43,6 +50,18 @@ function PostForm({ error = {}, post = {}, users }) {
         </button>
       </div>
     </Form>
+  );
+}
+
+function Users({ userId }) {
+  const users = useAsyncValue();
+  return (
+    <select type="search" name="userId" id="userId" defaultValue={userId || ""}>
+      <option value="">Any</option>
+      {users.map((user) => (
+        <Option key={user.id} user={user} />
+      ))}
+    </select>
   );
 }
 

@@ -11,6 +11,7 @@ import PostItem from "../../Components/PostItem";
 import Option from "../../Components/Option";
 import FormGroup from "../../Components/FormGroup";
 import CardFallback from "../../Components/CardFallback";
+import { SkeletonSelect } from "../../Components/Skeleton";
 
 export default function PostList() {
   const {
@@ -47,7 +48,7 @@ export default function PostList() {
         <div className="form-row">
           <FormGroup>
             <label htmlFor="userId">Author</label>
-            <Suspense fallback={<UsersFallback />}>
+            <Suspense fallback={<SkeletonSelect />}>
               <Await resolve={usersPromise}>
                 <Users userId={userId} />
               </Await>
@@ -88,14 +89,6 @@ function Users({ userId }) {
       {users.map((user) => (
         <Option key={user.id} user={user} />
       ))}
-    </select>
-  );
-}
-
-function UsersFallback() {
-  return (
-    <select type="search" name="userId" id="userId" disabled>
-      <option value="">Loading...</option>
     </select>
   );
 }

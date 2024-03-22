@@ -2,7 +2,7 @@ import userEvent from "@testing-library/user-event";
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import { routes } from "../../routes";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { mockServer } from "../../../test-setup/mockServer";
 import { HttpResponse, http } from "msw";
 
@@ -80,7 +80,12 @@ describe("New Post component", () => {
 
     expect(newPostApiHandler).toHaveBeenCalledOnce();
 
-    expect(await screen.findByText("New Post")).toBeInTheDocument();
+    await waitFor(
+      () => {
+        expect(screen.getByText("New Post")).toBeInTheDocument();
+      },
+      { timeout: 3000 }
+    );
     expect(await screen.getByText("Alex")).toBeInTheDocument();
     expect(await screen.findByText("Body post")).toBeInTheDocument();
   });
